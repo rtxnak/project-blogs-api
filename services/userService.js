@@ -13,6 +13,31 @@ const getAll = async () => {
   }
 };
 
+const create = async (user) => {
+  try {
+    const { displayName, email, password, image } = user;
+
+    const created = await User.create({ displayName, email, password, image });
+    
+    return created;
+  } catch (err) {
+    return ERROR;
+  }
+};
+
+const findEmail = async (email) => {
+  try {
+    const verifyEmail = await User.findOne({
+      where: { email },
+    });
+    return verifyEmail;
+  } catch (err) {
+    return null;
+  }
+};
+
 module.exports = {
   getAll,
+  create,
+  findEmail,
 };
