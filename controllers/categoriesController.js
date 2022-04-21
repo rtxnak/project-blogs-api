@@ -13,6 +13,16 @@ const create = async (req, res) => {
   }
 };
 
+const getAll = async (_req, res) => {
+  try {
+    const allCategories = await categoriesService.getAll();
+    return res.status(200).json(allCategories);
+  } catch (err) {
+    return res.status(500).json({ message: 'Erro no Servidor' });
+  }
+};
+
 module.exports = {
   create,
+  getAll,
 };

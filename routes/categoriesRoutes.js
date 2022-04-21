@@ -13,6 +13,9 @@ const {
 const routes = express.Router();
 
 routes
+  .get('/',
+    authMiddleware,
+    categoriesController.getAll)
   .post('/',
     authMiddleware,
     isValidName,
