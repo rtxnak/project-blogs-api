@@ -22,7 +22,24 @@ const create = async (req, res) => {
   }
 };
 
+const findById = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const userByID = await userService.findById(id);
+
+    if (!userByID) {
+      return res.status(404).json({ message: 'User does not exist' });
+    }
+
+    return res.status(200).json(userByID);
+  } catch (err) {
+    return res.status(500).json({ message: 'Erro no Servidor' });
+  }
+};
+
 module.exports = {
   getAll,
   create,
+  findById,
 };
