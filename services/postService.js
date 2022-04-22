@@ -82,9 +82,19 @@ const update = async ({ title, content, id }) => {
   }
 };
 
+const remove = async (id) => {
+  try {
+    await BlogPosts.destroy({ where: { id } });
+  } catch (err) {
+    console.log(err);
+    return ERROR;
+  }
+};
+
 module.exports = {
   create,
   getAll,
   findById,
   update,
+  remove,
 };
