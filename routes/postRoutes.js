@@ -16,6 +16,10 @@ const {
 const routes = express.Router();
 
 routes
+  .delete('/:id',
+    authMiddleware,
+    userBlogPostAuthorization,
+    postController.remove)
   .put('/:id',
     authMiddleware,
     userBlogPostAuthorization,
