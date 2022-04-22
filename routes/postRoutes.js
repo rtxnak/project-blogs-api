@@ -15,6 +15,9 @@ const {
 const routes = express.Router();
 
 routes
+  .get('/:id',
+    authMiddleware,
+    postController.findById)
   .get('/',
     authMiddleware,
     postController.getAll)
