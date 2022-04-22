@@ -15,6 +15,9 @@ const {
 const routes = express.Router();
 
 routes
+  .delete('/me',
+    authMiddleware,
+    userController.remove)
   .get('/:id',
     authMiddleware,
     userController.findById)

@@ -38,8 +38,22 @@ const findById = async (req, res) => {
   }
 };
 
+const remove = async (req, res) => {
+  try {
+  const { id } = req.user.data;
+
+  await userService.remove(id);
+
+  return res.status(204).end();
+} catch (err) {
+  console.log(err);
+  return res.status(500).json({ message: 'Erro no Servidor' });
+}
+};
+
 module.exports = {
   getAll,
   create,
   findById,
+  remove,
 };
