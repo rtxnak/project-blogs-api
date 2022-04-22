@@ -1,4 +1,5 @@
 const categoriesService = require('../services/categoriesService');
+const postService = require('../services/postService');
 
 const isValidTitle = (req, res, next) => {
   const { title } = req.body;
@@ -40,7 +41,7 @@ const isValidCategoryIds = async (req, res, next) => {
       resultArray.push(false);
     }
   }));
-  
+
   const exist = resultArray.some((result) => result === false);
 
   if (exist) {
@@ -50,8 +51,22 @@ const isValidCategoryIds = async (req, res, next) => {
   next();
 };
 
+const userBlogPostAuthorization = async (req, res, next) => {
+  const { id: userId } = req.user.data;
+  const { id } = req.params;
+
+  const PostByID = await postService.findById(id);
+
+  if (userId !== PostByID.dataValues.id) {
+    return res.status(401).json({ message: 'Unauthorized user' });
+  }
+
+  next();
+};
+
 module.exports = {
   isValidTitle,
   isValidContent,
   isValidCategoryIds,
+  userBlogPostAuthorization,
 };
