@@ -39,8 +39,26 @@ const findById = async (req, res) => {
   }
 };
 
+const update = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { title, content, categoryIds } = req.body;
+
+    if (categoryIds) {
+      return res.status(400).json({ message: 'Categories cannot be edited' });
+    }
+
+    const PostByID = await postService.update({ title, content, id });
+
+    return res.status(200).json(PostByID);
+  } catch (err) {
+    return res.status(500).json({ message: 'Erro no Servidor' });
+  }
+};
+
 module.exports = {
   create,
   getAll,
   findById,
+  update,
 };
