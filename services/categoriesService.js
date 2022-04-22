@@ -21,7 +21,19 @@ const getAll = async () => {
   }
 };
 
+const findById = async (id) => {
+  try {
+    const categoryByID = await Categories.findOne({
+      where: { id },
+    });
+    return categoryByID;
+  } catch (err) {
+    return ERROR;
+  }
+};
+
 module.exports = {
   create,
   getAll,
+  findById,
 };
