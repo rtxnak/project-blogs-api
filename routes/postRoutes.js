@@ -10,11 +10,18 @@ const {
   isValidTitle,
   isValidContent,
   isValidCategoryIds,
+  userBlogPostAuthorization,
 } = require('../middlewares/postValidations');
 
 const routes = express.Router();
 
 routes
+  .put('/:id',
+    authMiddleware,
+    userBlogPostAuthorization,
+    isValidTitle,
+    isValidContent,
+    postController.update)
   .get('/:id',
     authMiddleware,
     postController.findById)
