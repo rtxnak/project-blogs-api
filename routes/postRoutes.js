@@ -15,6 +15,9 @@ const {
 const routes = express.Router();
 
 routes
+  .get('/',
+    authMiddleware,
+    postController.getAll)
   .post('/',
     authMiddleware,
     isValidTitle,
