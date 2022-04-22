@@ -71,10 +71,22 @@ const remove = async (req, res) => {
 }
 };
 
+const getByQuery = async (req, res) => {
+  try {
+    const { q: term } = req.query;
+    console.log(term);
+    const post = await postService.getByQuery(term);
+    return res.status(200).json(post);
+  } catch (err) {
+    return res.status(500).json(ERROR);
+  }
+};
+
 module.exports = {
   create,
   getAll,
   findById,
   update,
   remove,
+  getByQuery,
 };

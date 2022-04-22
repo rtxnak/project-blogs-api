@@ -26,6 +26,9 @@ routes
     isValidTitle,
     isValidContent,
     postController.update)
+  .get('/search',
+    authMiddleware,
+    postController.getByQuery)
   .get('/:id',
     authMiddleware,
     postController.findById)

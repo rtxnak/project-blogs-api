@@ -1,6 +1,8 @@
 const Sequelize = require('sequelize');
 const { BlogPosts, PostsCategories, User, Categories } = require('../models');
 
+const { Op } = Sequelize;
+
 const config = require('../config/config');
 
 const sequelize = new Sequelize(config.development);
@@ -91,10 +93,34 @@ const remove = async (id) => {
   }
 };
 
+const getByQuery = async (term) => {
+  try {
+    const query = `%${term}`;
+    const post = await BlogPosts.findAll({
+      where: {
+        [Op.or]: {
+          title: { [Op.like]: query },
+          content: { [Op.like]: query },
+        },
+      },
+      include: [
+        { model: User, as: 'user', attributes: { exclude: ['password'] } },
+        { model: Categories, as: 'categories', through: { attributes: [] } },
+      ],
+    });
+    return post;
+  } catch (err) {
+    return ERROR;
+  }
+};
+
+// Utilização da Biblioteca OP - https://pt.stackoverflow.com/questions/355872/como-utilizar-o-like-do-sql-no-sequelize
+
 module.exports = {
   create,
   getAll,
   findById,
   update,
   remove,
+  getByQuery,
 };
