@@ -34,7 +34,7 @@ const getAll = async () => {
       include: [
         { model: User, as: 'user', attributes: { exclude: ['password'] } },
         { model: Categories, as: 'categories', through: { attributes: [] } },
-    ],
+      ],
     });
     return post;
   } catch (err) {
@@ -49,8 +49,33 @@ const findById = async (id) => {
       include: [
         { model: User, as: 'user', attributes: { exclude: ['password'] } },
         { model: Categories, as: 'categories', through: { attributes: [] } },
-    ],
+      ],
     });
+    return post;
+  } catch (err) {
+    return ERROR;
+  }
+};
+
+const update = async ({ title, content, id }) => {
+  try {
+    const timestamp = new Date().toJSON();
+    const PostByID = await BlogPosts.findByPk(id);
+
+    PostByID.title = title;
+    PostByID.content = content;
+    PostByID.updated = timestamp;
+
+    await PostByID.save();
+
+    const post = await BlogPosts.findOne({
+      where: { id },
+      include: [
+        { model: Categories, as: 'categories', through: { attributes: [] } },
+      ],
+      attributes: { exclude: ['id', 'published', 'updated'] },
+    });
+
     return post;
   } catch (err) {
     return ERROR;
@@ -61,4 +86,5 @@ module.exports = {
   create,
   getAll,
   findById,
+  update,
 };
