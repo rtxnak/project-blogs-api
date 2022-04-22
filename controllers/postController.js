@@ -1,5 +1,7 @@
 const postService = require('../services/postService');
 
+const ERROR = { message: 'Erro no Servidor' };
+
 const create = async (req, res) => {
   try {
     const { title, content, categoryIds } = req.body;
@@ -10,7 +12,7 @@ const create = async (req, res) => {
     return res.status(201).json(created);
   } catch (err) {
     console.log(err);
-    return res.status(500).json({ message: 'Erro no Servidor' });
+    return res.status(500).json(ERROR);
   }
 };
 
@@ -19,7 +21,7 @@ const getAll = async (_req, res) => {
     const post = await postService.getAll();
     return res.status(200).json(post);
   } catch (err) {
-    return res.status(500).json({ message: 'Erro no Servidor' });
+    return res.status(500).json(ERROR);
   }
 };
 
@@ -35,7 +37,7 @@ const findById = async (req, res) => {
 
     return res.status(200).json(PostByID);
   } catch (err) {
-    return res.status(500).json({ message: 'Erro no Servidor' });
+    return res.status(500).json(ERROR);
   }
 };
 
@@ -52,8 +54,21 @@ const update = async (req, res) => {
 
     return res.status(200).json(PostByID);
   } catch (err) {
-    return res.status(500).json({ message: 'Erro no Servidor' });
+    return res.status(500).json(ERROR);
   }
+};
+
+const remove = async (req, res) => {
+  try {
+  const { id } = req.params;
+
+  await postService.remove(id);
+
+  return res.status(204).end();
+} catch (err) {
+  console.log(err);
+  return res.status(500).json(ERROR);
+}
 };
 
 module.exports = {
@@ -61,4 +76,5 @@ module.exports = {
   getAll,
   findById,
   update,
+  remove,
 };
