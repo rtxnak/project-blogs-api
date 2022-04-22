@@ -57,7 +57,11 @@ const userBlogPostAuthorization = async (req, res, next) => {
 
   const PostByID = await postService.findById(id);
 
-  if (userId !== PostByID.dataValues.id) {
+    if (!PostByID) {
+    return res.status(404).json({ message: 'Post does not exist' });
+  }
+
+  if (userId !== PostByID.dataValues.userId) {
     return res.status(401).json({ message: 'Unauthorized user' });
   }
 
@@ -69,4 +73,5 @@ module.exports = {
   isValidContent,
   isValidCategoryIds,
   userBlogPostAuthorization,
+  // blogPostValidation,
 };
